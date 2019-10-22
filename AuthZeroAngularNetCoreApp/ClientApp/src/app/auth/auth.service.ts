@@ -4,6 +4,7 @@ import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
 import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from 'rxjs';
 import { tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AuthConfig } from './auth-config';
 
 @Injectable({
     providedIn: 'root'
@@ -15,9 +16,9 @@ export class AuthService {
     userProfile$ = this.userProfileSubject$.asObservable();
 
     // config
-    config = {
-        clientId: '<your client id here>',
-        domain: '<your domain url here>'
+    config: AuthConfig = {
+        clientId: localStorage.getItem('client_id'),
+        domain: localStorage.getItem('domain'),
     };
 
     // Create an observable of Auth0 instance of client
