@@ -1,0 +1,2 @@
+# AuthZeroAngularNetCoreApp
+Auth0 implementation DotnetCore-Angular application
