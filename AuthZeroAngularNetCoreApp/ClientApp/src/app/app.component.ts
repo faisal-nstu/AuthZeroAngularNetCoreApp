@@ -17,9 +17,5 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.auth.localAuthSetup();
-    // this.http.get<AuthConfig>(this.baseUrl + 'configuration/auth').subscribe(result => {
-    //   const config = result;
-    //   this.auth.auth0ClientSub$.next(config);
-    // }, error => console.error(error));
   }
 }
