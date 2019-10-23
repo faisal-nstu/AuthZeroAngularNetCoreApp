@@ -5,6 +5,7 @@ import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from
 import { tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthConfig } from './auth-config';
+import { AppConfigService } from '../app-config.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,17 +17,14 @@ export class AuthService {
     userProfile$ = this.userProfileSubject$.asObservable();
 
     // config
-    config: AuthConfig = {
-        clientId: localStorage.getItem('client_id'),
-        domain: localStorage.getItem('domain'),
-    };
+    config: AuthConfig = this.configService.getConfig();
 
     // Create an observable of Auth0 instance of client
     auth0Client$ = (from(
         createAuth0Client({
             domain: this.config.domain,
             client_id: this.config.clientId,
-            redirect_uri: `${window.location.origin}/callback`
+            redirect_uri: this.config.callbackUrl
         })
     ) as Observable<Auth0Client>).pipe(
         shareReplay(1), // Every subscription receives the same shared value
@@ -42,7 +40,8 @@ export class AuthService {
         concatMap((client: Auth0Client) => from(client.handleRedirectCallback()))
     );
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private configService: AppConfigService) {
+    }
 
     private getUser$(options?): Observable<any> {
         return this.auth0Client$.pipe(

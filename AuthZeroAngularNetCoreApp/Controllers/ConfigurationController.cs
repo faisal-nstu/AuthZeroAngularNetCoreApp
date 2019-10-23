@@ -18,12 +18,7 @@ namespace AuthZeroAngularNetCoreApp.Controllers
         [Route("auth")]
         public IActionResult GetAuthConfiguration()
         {
-            var config = new
-            {
-                clientId = AuthConfig.ClientId,
-                domain = AuthConfig.Domain
-            };
-            return Ok(config);
+            return Ok(AuthConfig);
         }
     }
 }

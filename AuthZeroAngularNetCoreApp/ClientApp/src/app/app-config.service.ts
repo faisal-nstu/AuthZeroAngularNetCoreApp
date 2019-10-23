@@ -3,18 +3,22 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthConfig } from './auth/auth-config';
 import { throwError } from 'rxjs';
 
-@Injectable()
-export class AppStartupService {
+@Injectable({
+  providedIn: 'root'
+})
+export class AppConfigService {
+
+  private authConfig: AuthConfig;
 
   constructor(private http: HttpClient) {
   }
 
   loadConfig(): Promise<any> {
+    console.log('--::--::--::--::--::--:: Getting configuration from API service');
     const promise = this.http.get<AuthConfig>('./configuration/auth')
       .toPromise()
       .then(c => {
-        localStorage.setItem('client_id', c.clientId);
-        localStorage.setItem('domain', c.domain);
+        this.authConfig = c;
       })
       .catch((error: HttpErrorResponse) => {
         // Verify if server error occurred
@@ -24,5 +28,10 @@ export class AppStartupService {
       });
 
     return promise;
+  }
+
+  getConfig(): AuthConfig {
+    console.log('--::--::--::--::--::--:: Getting configuration from LOCAL service');
+    return this.authConfig;
   }
 }

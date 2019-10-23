@@ -11,14 +11,14 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CallbackComponent } from './callback/callback.component';
 import { AuthGuard } from './auth/auth.guard';
-import { AppStartupService } from './app-startup.service';
+import { AppConfigService } from './app-config.service';
 
 
 //
 // Application initialization
 //
-export function loadAppConfig(startupService: AppStartupService) {
-  return () => startupService.loadConfig();
+export function loadAppConfig(configService: AppConfigService) {
+  return () => configService.loadConfig();
 }
 
 @NgModule({
@@ -42,8 +42,8 @@ export function loadAppConfig(startupService: AppStartupService) {
     ])
   ],
   providers: [
-    AppStartupService,
-    { provide: APP_INITIALIZER, useFactory: loadAppConfig, deps: [ AppStartupService], multi: true },
+    AppConfigService,
+    { provide: APP_INITIALIZER, useFactory: loadAppConfig, deps: [ AppConfigService], multi: true },
   ],
   bootstrap: [AppComponent]
 })
